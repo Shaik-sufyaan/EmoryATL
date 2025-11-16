@@ -1,6 +1,6 @@
 # Multi-stage build for 12Tree Backend
-# IMPORTANT: Pin to 3.12 for pydantic compatibility (3.13 has breaking changes)
-FROM python:3.12.7-slim as builder
+# Updated to Python 3.13 with compatible pydantic versions
+FROM python:3.13.1-slim as builder
 
 # Set working directory
 WORKDIR /app
@@ -21,7 +21,7 @@ RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 
 # Production stage
-FROM python:3.12.7-slim
+FROM python:3.13.1-slim
 
 # Install runtime dependencies
 RUN apt-get update && apt-get install -y \

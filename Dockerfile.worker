@@ -1,6 +1,6 @@
 # Dockerfile for Celery Worker
-# IMPORTANT: Pin to 3.12 for pydantic compatibility (3.13 has breaking changes)
-FROM python:3.12.7-slim
+# Updated to Python 3.13 with compatible pydantic versions
+FROM python:3.13.1-slim
 
 # Set working directory
 WORKDIR /app
