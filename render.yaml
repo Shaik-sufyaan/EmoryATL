@@ -100,7 +100,6 @@ services:
     buildCommand: cd Frontend/12Tree-frontend && npm install && npm run build
     staticPublishPath: ./Frontend/12Tree-frontend/dist
     pullRequestPreviewsEnabled: true
-    plan: free
     branch: master
     autoDeploy: true
     envVars:
