@@ -80,7 +80,7 @@ export default function LessonCards() {
   // Show card view screen if a lesson is active
   if (activeLesson) {
     return (
-      <div className="relative">
+      <div className="fixed inset-0 z-[100] bg-white">
         <CardViewScreen
           songTitle={activeLesson}
           cards={customCards.length > 0 ? customCards : (lessonCards[activeLesson] || [])}
@@ -90,20 +90,20 @@ export default function LessonCards() {
             setCustomTopic('')
           }}
         />
-        
+
         {/* Add to Library Button - Only for custom cards */}
         {customCards.length > 0 && (
           <button
             onClick={handleAddToLibrary}
-            className="fixed bottom-8 right-8 bg-white text-gray-800 font-bold 
-                       py-4 px-6 rounded-2xl shadow-2xl hover:shadow-xl 
+            className="fixed bottom-8 right-8 bg-white text-gray-800 font-bold
+                       py-4 px-6 rounded-2xl shadow-2xl hover:shadow-xl
                        tap focus-ring transition-all flex items-center gap-2 z-50
                        border-2 border-purple">
             <span className="text-2xl">➕</span>
             <span>Add to Library</span>
           </button>
         )}
-        
+
         {/* Toast Notification */}
         {showToast && (
           <Toast

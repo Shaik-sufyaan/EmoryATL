@@ -26,8 +26,8 @@ logger = logging.getLogger(__name__)
 
 # Initialize FastAPI app
 app = FastAPI(
-    title="Pirate Karaoke API",
-    description="Generate pirate-themed sea shanty karaoke songs for kids",
+    title="Kids Karaoke API",
+    description="Generate gentle, educational nursery rhyme karaoke songs for preschool kids",
     version="1.0.0"
 )
 
@@ -76,7 +76,7 @@ class SongResponse(BaseModel):
 @app.on_event("startup")
 async def startup_event():
     """Initialize MongoDB connection on startup"""
-    logger.info("Starting Pirate Karaoke API...")
+    logger.info("Starting Kids Karaoke API...")
     await connect_to_mongo()
     logger.info("MongoDB connected and ready")
 
@@ -84,7 +84,7 @@ async def startup_event():
 @app.on_event("shutdown")
 async def shutdown_event():
     """Close MongoDB connection on shutdown"""
-    logger.info("Shutting down Pirate Karaoke API...")
+    logger.info("Shutting down Kids Karaoke API...")
     await close_mongo_connection()
 
 
@@ -93,7 +93,7 @@ async def shutdown_event():
 async def root():
     """Root endpoint"""
     return {
-        "message": "Ahoy! Welcome to Pirate Karaoke API",
+        "message": "Welcome to Kids Karaoke API - Gentle Nursery Rhymes for Preschoolers",
         "version": "1.0.0",
         "database": "MongoDB",
         "endpoints": {
@@ -107,7 +107,7 @@ async def root():
 @app.get("/health")
 async def health_check():
     """Health check endpoint"""
-    return {"status": "healthy", "service": "pirate-karaoke", "database": "mongodb"}
+    return {"status": "healthy", "service": "kids-karaoke", "database": "mongodb"}
 
 
 @app.post("/api/generate", response_model=JobResponse)

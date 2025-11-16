@@ -1,10 +1,14 @@
+import Clouds from './Clouds'
+import Sun from './Sun'
+
 export default function SkyDecorations() {
   return (
     <>
-      {/* Clouds - positioned away from left sidebar */}
-      <div className="cloud w-32 h-16 top-16 left-80 float" style={{ animationDelay: '0s', boxShadow: '100px 0 0 -5px white' }} />
-      <div className="cloud w-40 h-20 top-12 right-40 float" style={{ animationDelay: '1s', boxShadow: '120px 0 0 -10px white' }} />
-      <div className="cloud w-36 h-18 top-28 right-96 float" style={{ animationDelay: '1.5s', boxShadow: '110px 0 0 -8px white' }} />
+      {/* Realistic SVG Clouds drifting across sky */}
+      <Clouds />
+
+      {/* Sun with glow and animated rays */}
+      <Sun />
 
       {/* Music notes floating - positioned throughout the screen */}
       <div className="absolute text-pink-400 text-3xl opacity-40 float" style={{ top: '35%', left: '40%', animationDelay: '0.5s' }}>🎵</div>

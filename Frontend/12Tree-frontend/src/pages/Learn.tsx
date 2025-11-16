@@ -7,9 +7,9 @@ export default function Learn() {
   const [activeMode, setActiveMode] = useState<'music' | 'cards'>('music')
 
   return (
-    <div>
+    <div className="w-full mt-32">
       <ModeTabSwitcher activeMode={activeMode} onModeChange={setActiveMode} />
-      
+
       {activeMode === 'music' ? <MusicMode /> : <LessonCards />}
     </div>
   )

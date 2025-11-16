@@ -40,7 +40,7 @@ def generate_song_task(self, word: str) -> Dict[str, Any]:
     Background task for complete song generation pipeline
 
     Args:
-        word: The input word to generate a shanty about
+        word: The input word to generate a gentle nursery rhyme about
 
     Returns:
         Dictionary with song data (lyrics, audio_url, timings, etc.)
@@ -60,11 +60,11 @@ def generate_song_task(self, word: str) -> Dict[str, Any]:
         logger.info(f"Found rhymes: {rhymes}")
 
         # Update progress: 20%
-        self.update_state(state='PROGRESS', meta={'progress': 20, 'status': 'Writing pirate shanty...'})
+        self.update_state(state='PROGRESS', meta={'progress': 20, 'status': 'Writing gentle nursery rhyme...'})
 
         # Step 2: Generate lyrics with Gemini
         lyrics_gen = LyricsGenerator()
-        lyrics_data = lyrics_gen.generate_pirate_shanty(word, rhymes)
+        lyrics_data = lyrics_gen.generate_nursery_rhyme(word, rhymes)
 
         logger.info(f"Generated lyrics:\n{lyrics_data['lyrics']}")
 
@@ -128,7 +128,7 @@ def generate_song_task(self, word: str) -> Dict[str, Any]:
                 )
         else:
             # Use generated beats (original behavior)
-            instrumental_path = audio_service.get_instrumental(vocal_path, genre="pirate-shanty")
+            instrumental_path = audio_service.get_instrumental(vocal_path, genre="nursery-rhyme")
 
             if not instrumental_path:
                 logger.info(f"Generating themed instrumental for '{word}'...")

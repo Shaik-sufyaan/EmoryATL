@@ -47,25 +47,29 @@ export default function Library() {
   // Full-screen song player
   if (viewMode === 'song' && activeSong) {
     return (
-      <FullScreenPlayer
-        songTitle={activeSong.title}
-        artist="12Tree"
-        lyrics={activeSong.lyrics || 'No lyrics available for this song.'}
-        audioUrl={activeSong.audioUrl}
-        mode="library"
-        onClose={handleClose}
-      />
+      <div className="fixed inset-0 z-[100] bg-white">
+        <FullScreenPlayer
+          songTitle={activeSong.title}
+          artist="12Tree"
+          lyrics={activeSong.lyrics || 'No lyrics available for this song.'}
+          audioUrl={activeSong.audioUrl}
+          mode="library"
+          onClose={handleClose}
+        />
+      </div>
     )
   }
-  
+
   // Card view screen
   if (viewMode === 'cards' && activeSong) {
     return (
-      <CardViewScreen
-        songTitle={activeSong.title}
-        cards={generateMockCards(activeSong.title)}
-        onClose={handleClose}
-      />
+      <div className="fixed inset-0 z-[100] bg-white">
+        <CardViewScreen
+          songTitle={activeSong.title}
+          cards={generateMockCards(activeSong.title)}
+          onClose={handleClose}
+        />
+      </div>
     )
   }
   
