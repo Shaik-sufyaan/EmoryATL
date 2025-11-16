@@ -15,6 +15,7 @@ from app.database import connect_to_mongo, close_mongo_connection
 from app.models import Job, SongCache, UserLibrary, User
 from app.tasks import generate_song_task
 from app.services.rhyme_service import validate_word
+from app.services.flashcard_service import FlashcardGenerator
 
 # Configure logging
 logging.basicConfig(
@@ -341,6 +342,49 @@ async def delete_cached_song(word: str):
 
 # Import datetime for job updates
 from datetime import datetime
+
+
+# Flashcard Generation Endpoints
+@app.post("/api/cards/generate")
+async def generate_flashcards(request: dict):
+    """
+    Generate educational flashcards for preschool kids using Gemini AI
+
+    Args:
+        request: Dictionary with 'topic' field
+
+    Returns:
+        List of flashcards with front/back questions and answers
+    """
+    try:
+        topic = request.get('topic', '').strip()
+
+        if not topic:
+            raise HTTPException(
+                status_code=400,
+                detail="Topic is required"
+            )
+
+        logger.info(f"Generating flashcards for topic: '{topic}'")
+
+        # Initialize flashcard generator
+        flashcard_generator = FlashcardGenerator()
+
+        # Generate flashcards using Gemini
+        flashcards = flashcard_generator.generate_flashcards(topic)
+
+        logger.info(f"Successfully generated {len(flashcards)} flashcards for '{topic}'")
+
+        return {
+            "topic": topic,
+            "cards": flashcards
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error generating flashcards: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 # Authentication Endpoints

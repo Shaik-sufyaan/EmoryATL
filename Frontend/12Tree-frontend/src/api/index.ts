@@ -206,6 +206,34 @@ export async function getSongs() {
 export async function getLessons() {
   // stub for GET /lessons
 }
-export async function getCards() {
-  // stub for GET /cards
+
+export interface Flashcard {
+  id: string
+  front: string
+  back: string
+  known: boolean
+}
+
+export async function generateFlashcards(topic: string): Promise<Flashcard[]> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/cards/generate`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ topic }),
+    })
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}))
+      throw new Error(errorData.detail || `Failed to generate flashcards: ${response.statusText}`)
+    }
+
+    const data = await response.json()
+    return data.cards
+
+  } catch (error) {
+    console.error('Error generating flashcards:', error)
+    throw error
+  }
 }

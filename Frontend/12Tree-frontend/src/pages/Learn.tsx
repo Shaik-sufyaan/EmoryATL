@@ -10,7 +10,9 @@ export default function Learn() {
     <div className="w-full mt-32">
       <ModeTabSwitcher activeMode={activeMode} onModeChange={setActiveMode} />
 
-      {activeMode === 'music' ? <MusicMode /> : <LessonCards />}
+      <div className="mt-12">
+        {activeMode === 'music' ? <MusicMode /> : <LessonCards />}
+      </div>
     </div>
   )
 }

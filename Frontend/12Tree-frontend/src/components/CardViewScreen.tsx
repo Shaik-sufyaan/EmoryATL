@@ -54,11 +54,11 @@ export default function CardViewScreen({
   }
   
   return (
-    <div className="min-h-screen p-8 max-w-4xl mx-auto">
+    <div className="min-h-screen p-8 pb-24 max-w-4xl mx-auto">
       {/* Header */}
-      <button 
+      <button
         onClick={onClose}
-        className="flex items-center gap-2 text-gray-700 font-bold mb-6 
+        className="flex items-center gap-2 text-gray-700 font-bold mb-6
                    hover:text-pink tap focus-ring">
         <span className="text-2xl">←</span>
         <span>Back</span>

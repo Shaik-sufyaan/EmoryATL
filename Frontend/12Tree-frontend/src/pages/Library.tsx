@@ -77,7 +77,7 @@ export default function Library() {
   return (
     <div className="max-w-4xl mx-auto">
       {/* Section Tabs */}
-      <div className="mb-8">
+      <div className="mb-12">
         <div className="flex gap-3">
           <button
             onClick={() => setActiveSection('songs')}
@@ -103,7 +103,7 @@ export default function Library() {
           </button>
         </div>
       </div>
-      
+
       {/* Your Songs Section */}
       {activeSection === 'songs' && (
         <div className="space-y-4">

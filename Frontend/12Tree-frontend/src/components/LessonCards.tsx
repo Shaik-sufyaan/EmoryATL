@@ -2,6 +2,7 @@ import { useState } from 'react'
 import LessonCard from '@components/LessonCard'
 import CardViewScreen from '@components/CardViewScreen'
 import Toast from '@components/Toast'
+import { generateFlashcards, Flashcard } from '@api/index'
 
 // Mock card data for each lesson
 const lessonCards: Record<string, Array<{ id: string; front: string; back: string; known: boolean }>> = {
@@ -44,7 +45,7 @@ export default function LessonCards() {
   const [activeLesson, setActiveLesson] = useState<string | null>(null)
   const [customTopic, setCustomTopic] = useState('')
   const [loading, setLoading] = useState(false)
-  const [customCards, setCustomCards] = useState<Array<{ id: string; front: string; back: string; known: boolean }>>([])
+  const [customCards, setCustomCards] = useState<Flashcard[]>([])
   const [showToast, setShowToast] = useState(false)
   const [toastMessage, setToastMessage] = useState('')
 
@@ -55,21 +56,22 @@ export default function LessonCards() {
 
   const createCustomCards = async () => {
     if (!customTopic.trim()) return
-    
+
     setLoading(true)
-    
-    // Generate custom cards based on topic
-    // For now, create simple placeholder cards
-    const newCards = [
-      { id: '1', front: `What is ${customTopic}?`, back: 'Learn through practice!', known: false },
-      { id: '2', front: `Key fact about ${customTopic}?`, back: 'Practice makes perfect', known: false },
-      { id: '3', front: `Why learn ${customTopic}?`, back: 'To grow and improve!', known: false },
-      { id: '4', front: `Fun fact about ${customTopic}?`, back: 'It\'s interesting!', known: false },
-    ]
-    
-    setCustomCards(newCards)
-    setActiveLesson(customTopic)
-    setLoading(false)
+
+    try {
+      // Generate custom cards using Gemini AI
+      const newCards = await generateFlashcards(customTopic)
+
+      setCustomCards(newCards)
+      setActiveLesson(customTopic)
+    } catch (error) {
+      console.error('Error generating flashcards:', error)
+      setToastMessage('Failed to generate flashcards. Please try again!')
+      setShowToast(true)
+    } finally {
+      setLoading(false)
+    }
   }
   
   const handleAddToLibrary = () => {
@@ -80,7 +82,7 @@ export default function LessonCards() {
   // Show card view screen if a lesson is active
   if (activeLesson) {
     return (
-      <div className="fixed inset-0 z-[100] bg-white">
+      <div className="fixed inset-0 z-[100] bg-white overflow-y-auto">
         <CardViewScreen
           songTitle={activeLesson}
           cards={customCards.length > 0 ? customCards : (lessonCards[activeLesson] || [])}
