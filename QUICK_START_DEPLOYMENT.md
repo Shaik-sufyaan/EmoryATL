@@ -1,4 +1,4 @@
-# 🚀 Quick Start: Deploy Your 12Tree App NOW!
+   # 🚀 Quick Start: Deploy Your 12Tree App NOW!
 
 ## ⏱️ Time Required: 10 minutes
 
@@ -34,8 +34,8 @@ Follow these simple steps to get your app live on the internet:
 
    **For Backend & Worker:**
    ```
-   GEMINI_API_KEY = AIzaSyAnDrPNCFf4AF1AmbMmXzXI1zvz3TELg1c
-   ELEVENLABS_API_KEY = sk_5d87ed2c1435c24c5cb270567f2c2eaae6a91e25bb6a0183
+   GEMINI_API_KEY = xxxxxxxxxxxxxxxxxxxxxxx
+   ELEVENLABS_API_KEY = sk_xxxxxxxxxxxxxxxx
    ```
 
    **For Frontend:**
