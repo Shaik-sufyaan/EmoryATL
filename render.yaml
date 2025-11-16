@@ -19,10 +19,7 @@ services:
       - key: ALLOWED_ORIGINS
         sync: false # Set manually in Render dashboard
       - key: REDIS_URL
-        fromService:
-          type: redis
-          name: 12tree-redis
-          property: connectionString
+        sync: false # Set to external Redis URL (e.g., Upstash, Redis Cloud)
       - key: MONGODB_URL
         value: mongodb+srv://sufyaan1517_db_user:WNEn0Vit54418xMF@cluster0.pxewery.mongodb.net/?appName=Cluster0
       - key: MONGODB_DB_NAME
@@ -62,10 +59,7 @@ services:
       - key: DEBUG
         value: False
       - key: REDIS_URL
-        fromService:
-          type: redis
-          name: 12tree-redis
-          property: connectionString
+        sync: false # Set to external Redis URL (e.g., Upstash, Redis Cloud)
       - key: MONGODB_URL
         value: mongodb+srv://sufyaan1517_db_user:WNEn0Vit54418xMF@cluster0.pxewery.mongodb.net/?appName=Cluster0
       - key: MONGODB_DB_NAME
@@ -116,10 +110,8 @@ services:
         name: X-XSS-Protection
         value: 1; mode=block
 
-# Redis Database
-databases:
-  - name: 12tree-redis
-    databaseName: tree12_redis
-    plan: free # 25MB free tier
-    region: oregon
-    ipAllowList: [] # Allow all
+# Note: Redis is not available on Render's free tier
+# You'll need to use an external Redis service like:
+# - Upstash (https://upstash.com/) - Free tier available
+# - Redis Cloud (https://redis.com/try-free/) - Free tier available
+# Set the REDIS_URL environment variable in Render dashboard after signup
