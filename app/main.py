@@ -32,9 +32,12 @@ app = FastAPI(
 )
 
 # CORS middleware
+# Get allowed origins from environment variable, default to all for development
+import os
+allowed_origins = os.getenv("ALLOWED_ORIGINS", "*").split(",")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Update for production
+    allow_origins=allowed_origins if allowed_origins != ["*"] else ["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

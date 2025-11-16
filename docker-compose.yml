@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  # Redis for Celery broker and caching
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # FastAPI Backend
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+      - MONGODB_URL=${MONGODB_URL}
+      - MONGODB_DB_NAME=${MONGODB_DB_NAME}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - ELEVENLABS_API_KEY=${ELEVENLABS_API_KEY}
+      - DEBUG=True
+    volumes:
+      - ./outputs:/app/outputs
+      - ./background_music:/app/background_music
+      - ./beats:/app/beats
+      - ./temp:/app/temp
+    depends_on:
+      - redis
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Celery Worker
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+      - MONGODB_URL=${MONGODB_URL}
+      - MONGODB_DB_NAME=${MONGODB_DB_NAME}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - ELEVENLABS_API_KEY=${ELEVENLABS_API_KEY}
+      - DEBUG=True
+    volumes:
+      - ./outputs:/app/outputs
+      - ./background_music:/app/background_music
+      - ./beats:/app/beats
+      - ./temp:/app/temp
+    depends_on:
+      - redis
+      - backend
+
+volumes:
+  redis_data:

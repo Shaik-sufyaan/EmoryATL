@@ -1,0 +1,133 @@
+# Render.com Blueprint for 12Tree Application
+# This file defines all services needed for deployment
+
+services:
+  # Backend API Service (FastAPI)
+  - type: web
+    name: 12tree-backend
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    region: oregon # Choose closest to your users
+    plan: free # Free tier
+    branch: master
+    healthCheckPath: /health
+    autoDeploy: true
+    disk:
+      name: outputs-disk
+      mountPath: /app/outputs
+      sizeGB: 1 # 1GB free tier
+    envVars:
+      - key: DEBUG
+        value: False
+      - key: ALLOWED_ORIGINS
+        sync: false # Set manually in Render dashboard
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: 12tree-redis
+          property: connectionString
+      - key: MONGODB_URL
+        value: mongodb+srv://sufyaan1517_db_user:WNEn0Vit54418xMF@cluster0.pxewery.mongodb.net/?appName=Cluster0
+      - key: MONGODB_DB_NAME
+        value: pirate_karaoke
+      - key: GEMINI_API_KEY
+        sync: false # Set in dashboard for security
+      - key: ELEVENLABS_API_KEY
+        sync: false # Set in dashboard for security
+      - key: TTS_PROVIDER
+        value: elevenlabs
+      - key: TTS_FALLBACK_TO_BARK
+        value: True
+      - key: ELEVENLABS_VOICE_ID
+        value: cgSgspJ2msm6clMCkdW9
+      - key: ELEVENLABS_MODEL
+        value: eleven_multilingual_v2
+      - key: ELEVENLABS_STABILITY
+        value: 0.4
+      - key: ELEVENLABS_SIMILARITY
+        value: 0.75
+      - key: ELEVENLABS_STYLE
+        value: 0.6
+      - key: ELEVENLABS_BOOST
+        value: True
+
+  # Celery Worker Service
+  - type: worker
+    name: 12tree-worker
+    runtime: docker
+    dockerfilePath: ./Dockerfile.worker
+    region: oregon
+    plan: free
+    branch: master
+    autoDeploy: true
+    disk:
+      name: worker-outputs-disk
+      mountPath: /app/outputs
+      sizeGB: 1
+    envVars:
+      - key: DEBUG
+        value: False
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: 12tree-redis
+          property: connectionString
+      - key: MONGODB_URL
+        value: mongodb+srv://sufyaan1517_db_user:WNEn0Vit54418xMF@cluster0.pxewery.mongodb.net/?appName=Cluster0
+      - key: MONGODB_DB_NAME
+        value: pirate_karaoke
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: ELEVENLABS_API_KEY
+        sync: false
+      - key: TTS_PROVIDER
+        value: elevenlabs
+      - key: TTS_FALLBACK_TO_BARK
+        value: True
+      - key: ELEVENLABS_VOICE_ID
+        value: cgSgspJ2msm6clMCkdW9
+      - key: ELEVENLABS_MODEL
+        value: eleven_multilingual_v2
+      - key: ELEVENLABS_STABILITY
+        value: 0.4
+      - key: ELEVENLABS_SIMILARITY
+        value: 0.75
+      - key: ELEVENLABS_STYLE
+        value: 0.6
+      - key: ELEVENLABS_BOOST
+        value: True
+      - key: C_FORCE_ROOT
+        value: true
+
+  # Frontend Static Site
+  - type: web
+    name: 12tree-frontend
+    runtime: static
+    buildCommand: cd Frontend/12Tree-frontend && npm install && npm run build
+    staticPublishPath: ./Frontend/12Tree-frontend/dist
+    pullRequestPreviewsEnabled: true
+    region: oregon
+    plan: free
+    branch: master
+    autoDeploy: true
+    envVars:
+      - key: VITE_API_URL
+        sync: false # Set to backend URL: https://12tree-backend.onrender.com
+    headers:
+      - path: /*
+        name: X-Frame-Options
+        value: DENY
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: X-XSS-Protection
+        value: 1; mode=block
+
+# Redis Database
+databases:
+  - name: 12tree-redis
+    databaseName: 12tree_redis
+    plan: free # 25MB free tier
+    region: oregon
+    ipAllowList: [] # Allow all

@@ -1,0 +1,88 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Documentation
+*.md
+!README.md
+Docs/
+
+# Tests
+.pytest_cache/
+.coverage
+htmlcov/
+test_*/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Generated files (will be created in container)
+outputs/*.mp3
+outputs/*.wav
+temp/*
+
+# Frontend
+Frontend/
+node_modules/
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+data/
+
+# Logs
+*.log
+logs/
+
+# Environment (will be set via environment variables)
+.env
+.env.*
+
+# Docker
+docker-compose.yml
+Dockerfile*
+.dockerignore
+
+# CI/CD
+.github/
+
+# Other
+scan_beats.py
+setup.sh
+preflight_check.sh
+start_app.bat
+test_frontend.html
