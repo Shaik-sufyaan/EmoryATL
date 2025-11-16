@@ -12,10 +12,7 @@ services:
     branch: master
     healthCheckPath: /health
     autoDeploy: true
-    disk:
-      name: outputs-disk
-      mountPath: /app/outputs
-      sizeGB: 1 # 1GB free tier
+    # Note: Disks are not available on free tier
     envVars:
       - key: DEBUG
         value: False
@@ -60,10 +57,7 @@ services:
     plan: free
     branch: master
     autoDeploy: true
-    disk:
-      name: worker-outputs-disk
-      mountPath: /app/outputs
-      sizeGB: 1
+    # Note: Disks are not available on free tier
     envVars:
       - key: DEBUG
         value: False
@@ -106,7 +100,6 @@ services:
     buildCommand: cd Frontend/12Tree-frontend && npm install && npm run build
     staticPublishPath: ./Frontend/12Tree-frontend/dist
     pullRequestPreviewsEnabled: true
-    region: oregon
     plan: free
     branch: master
     autoDeploy: true
@@ -127,7 +120,7 @@ services:
 # Redis Database
 databases:
   - name: 12tree-redis
-    databaseName: 12tree_redis
+    databaseName: tree12_redis
     plan: free # 25MB free tier
     region: oregon
     ipAllowList: [] # Allow all
