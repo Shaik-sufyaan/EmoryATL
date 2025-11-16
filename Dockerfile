@@ -16,9 +16,13 @@ RUN apt-get update && apt-get install -y \
 # Copy requirements first for better caching
 COPY requirements.txt .
 
-# Install Python dependencies
+# Install Python dependencies with retry logic and timeout settings
 RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
+    pip install --no-cache-dir \
+    --retries 5 \
+    --timeout 300 \
+    --default-timeout=300 \
+    -r requirements.txt
 
 # Production stage
 FROM python:3.13.1-slim
